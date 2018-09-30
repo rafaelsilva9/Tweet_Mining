@@ -5,8 +5,8 @@ Created on Mon Sep 24 00:39:48 2018
 
 @author: rjs
 """
-#import pandas as pd
 import tweepy
+import re
 
 consumer_key = 'eICGRZ3xMVGAS2LZtW2HZ8ESP'
 consumer_secret = 'uaaibUdbfNujAJbaXJ6fZCDoqTPZVapf6iLMSuOl7zvEATfRky'
@@ -30,12 +30,27 @@ class TweetsCollector:
         for tweet in tweets_result:
             if (not tweet.retweeted) and ('RT @' not in tweet.full_text):
                 location_list.append(tweet.user.location)
-                tweets_list.append(tweet.full_text)
+                tweets_list.append(self.clean_tweets(tweet.full_text))
         
         print('Tweets coletados')
         
         return tweets_list
-            
-#        tweets_Dataframe = pd.DataFrame({'Tweets': tweets_list, 'Location': location_list})
-#        tweets_Dataframe.to_csv('../bases/tweets.csv', encoding='utf-8', index = False)
-#        print('A file with the collected tweets was generated')
+    
+    def clean_tweets(self, tweet):
+        tweet = self.remove_outside_multilingual_plane(tweet)
+        tweet = self.remove_links(tweet)
+        return tweet
+        
+    # =============================================================================
+    # Remove links
+    # =============================================================================
+    def remove_links(self, tweet):
+        return re.sub(r'\w+:\/{2}[\d\w-]+(\.[\d\w-]+)*(?:(?:\/[^\s/]*))*', '', tweet)
+        
+    # =========================================================================
+    # Strip all characters outside of the Basic Multilingual Plane
+    # =========================================================================
+    def remove_outside_multilingual_plane(self, tweet):
+        tweet = tweet.encode("utf-8")
+        pattern = re.compile(u"[^\U00000000-\U0000d7ff\U0000e000-\U0000ffff]", flags=re.UNICODE)
+        return pattern.sub(u'', unicode(tweet, 'utf-8'))

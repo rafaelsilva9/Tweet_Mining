@@ -10,7 +10,7 @@ from TweetsCollector import TweetsCollector
 class PositiveTweetsCollector:
     
     def create_query_for_positive_tweets(self):
-        key_words = ['João Amoêdo', '#VemComJoão30', '#NOVO30', '#ondalaranja', 'JoaoAmoedoNosDebates']
+        key_words = ['#VemComJoão30', '#NOVO30', '#ondalaranja', 'JoaoAmoedoNosDebates']
         search_query = ''
     
         for word in key_words:
