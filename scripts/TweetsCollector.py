@@ -5,7 +5,7 @@ Created on Mon Sep 24 00:39:48 2018
 
 @author: rjs
 """
-import pandas as pd
+#import pandas as pd
 import tweepy
 
 consumer_key = 'eICGRZ3xMVGAS2LZtW2HZ8ESP'
@@ -31,7 +31,11 @@ class TweetsCollector:
             if (not tweet.retweeted) and ('RT @' not in tweet.full_text):
                 location_list.append(tweet.user.location)
                 tweets_list.append(tweet.full_text)
+        
+        print('Tweets coletados')
+        
+        return tweets_list
             
-        tweets_Dataframe = pd.DataFrame({'Tweets': tweets_list, 'Location': location_list})
-        tweets_Dataframe.to_csv('../bases/tweets.csv', encoding='utf-8', index = False)
-        print('A file with the collected tweets was generated')
+#        tweets_Dataframe = pd.DataFrame({'Tweets': tweets_list, 'Location': location_list})
+#        tweets_Dataframe.to_csv('../bases/tweets.csv', encoding='utf-8', index = False)
+#        print('A file with the collected tweets was generated')
