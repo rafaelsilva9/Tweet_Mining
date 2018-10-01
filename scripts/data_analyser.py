@@ -8,35 +8,47 @@ Created on Fri Sep 21 16:49:21 2018
 import pandas as pd
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.naive_bayes import MultinomialNB
+import matplotlib.pyplot as plt
 
-dataset = pd.read_csv('../bases/tweets.csv')
-tweets = dataset['Tweets']
-classes = dataset['Location']
-
-word_list = [
-        'Amoedo é legal', 
-        'Amoedo é fraco', 
-        'Amoedo será um bom presidente', 
-        'Amoedo será o pior presidente',
-        '#AmoedoGostoso',
-        'Todos com Amoedo',
-        'Todos contra Amoedo',
-        'Amoedo é inteligente',
-        'Amoedo não é inteligente',
-        'Amoedo tem boas propostas de governo',
-        'Amoedo não tem ideias boas para o governo',
-        ]
-
-vectorizer = CountVectorizer(analyzer='word')
-# Combine fit and transform into a single step
-training_data = vectorizer.fit_transform(word_list)
-
-print(vectorizer.get_feature_names())
-print(training_data.toarray())
-
-# Now that we’ve got term counts for each document we can use 
-# the TfidfTransformer to calculate the weights for each term in each document
-
+vectorizer = CountVectorizer(analyzer='word', ngram_range=(1, 2))
 transformer = TfidfTransformer()
-calculated_weights = transformer.fit_transform(training_data)
-print (calculated_weights)
+dataset = pd.read_csv('../bases/classified_tweets.csv')
+tweets = dataset['Tweets']
+classes = dataset['Classes']
+
+def learn():
+    # =============================================================================
+    # Combine fit and transform into a single step    
+    # =============================================================================
+    training_data = vectorizer.fit_transform(tweets)
+    
+    # =============================================================================
+    # Now that we’ve got term counts for each document we can use 
+    # the TfidfTransformer to calculate the weights for each term in each document    
+    # =============================================================================
+    calculated_weights = transformer.fit_transform(training_data)
+    
+    model = MultinomialNB()
+    model.fit(calculated_weights, classes)
+    
+    return model
+
+def predict(model):
+    
+    training_data = vectorizer.transform(tweets)
+    calculated_weights = transformer.transform(training_data)
+    
+    predictions = model.predict(calculated_weights)
+    return predictions
+
+def viewChart(predictions):
+    result = pd.DataFrame({'Tweets':tweets,'Classes':predictions})
+    
+    plt.figure(figsize=(8, 6))
+    result.groupby('Classes').count().plot.bar(ylim=0)
+    plt.show()
+    
+model = learn()
+predictions = predict(model)
+viewChart(predictions)

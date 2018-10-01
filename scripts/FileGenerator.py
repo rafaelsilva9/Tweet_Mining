@@ -15,7 +15,7 @@ class FileGenerator:
         self.append_tweets(positive_list, 'A FAVOR', tweets_list, class_list)
         self.append_tweets(negative_list, 'CONTRA', tweets_list, class_list)
         
-        tweets_Dataframe = pd.DataFrame({'Tweets': tweets_list, 'Class': class_list})
+        tweets_Dataframe = pd.DataFrame({'Tweets': tweets_list, 'Classes': class_list})
         tweets_Dataframe.to_csv(path, encoding='utf-8', index = False)
         print('A file with the collected tweets was generated')
     

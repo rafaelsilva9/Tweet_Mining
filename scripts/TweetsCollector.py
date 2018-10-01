@@ -25,7 +25,7 @@ class TweetsCollector:
         tweets_list = list()
         print('Collecting tweets ...')
         tweets_result = tweepy.Cursor(api.search, q=search_query, tweet_mode='extended', 
-                                  count=200, lang="pt").items(200)
+                                  count=6, lang="pt").items(6)
     
         for tweet in tweets_result:
             if (not tweet.retweeted) and ('RT @' not in tweet.full_text):

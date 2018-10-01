@@ -9,7 +9,7 @@ from PositiveTweetsCollector import PositiveTweetsCollector
 from NegativeTweetsCollector import NegativeTweetsCollector
 from FileGenerator import FileGenerator
 
-COLLECTED_TWEETS_PATH = '../bases/tweets.csv'
+COLLECTED_TWEETS_PATH = '../bases/classified_tweets.csv'
 
 positive_collector = PositiveTweetsCollector()
 positive_list = positive_collector.collect_positive_tweets()

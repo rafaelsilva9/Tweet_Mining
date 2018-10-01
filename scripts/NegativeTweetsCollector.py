@@ -11,7 +11,7 @@ from TweetsCollector import TweetsCollector
 class NegativeTweetsCollector:
     
     def create_query_for_negative_tweets(self):
-        key_words = ['#AmoedoNao',  '#ForaAmoedo', '#ForaNovo', '#NovoNao', '#NovoNunca']
+        key_words = ['#AmoedoNao',  '#ForaAmoedo', '#ForaNovo', '#NovoNao', '#NovoNunca', 'AmoedoNunca']
         search_query = ''
     
         for word in key_words:
